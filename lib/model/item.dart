@@ -15,4 +15,13 @@ class Item {
       title: title ?? this.title,
     );
   }
+
+  Item.fromJson(Map json)
+      : title = json['title'],
+        id = json['id'];
+
+  Map toJson() => {
+        'id': id,
+        'title': title,
+      };
 }

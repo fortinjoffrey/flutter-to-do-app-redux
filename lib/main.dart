@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
+import 'package:to_do_app_redux/redux/actions.dart';
+import 'package:to_do_app_redux/redux/middleware.dart';
+import 'package:redux_dev_tools/redux_dev_tools.dart';
+import 'package:flutter_redux_dev_tools/flutter_redux_dev_tools.dart';
 
 import 'model/app_state.dart';
 import 'redux/reducers.dart';
@@ -17,25 +21,31 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final Store<AppState> store = Store<AppState>(
+    final DevToolsStore<AppState> store = DevToolsStore<AppState>(
       appStateReducer,
       initialState: AppState.initialState(),
+      middleware: [appStateMiddleware],
     );
 
     return StoreProvider<AppState>(
       store: store,
       child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
-        theme: ThemeData.dark(),
-        home: Home(),
-      ),
+          debugShowCheckedModeBanner: false,
+          title: 'Flutter Demo',
+          theme: ThemeData.dark(),
+          home: StoreBuilder<AppState>(
+            onInit: (store) => store.dispatch(GetItemsAction()),
+            builder: (BuildContext context, Store<AppState> store) {
+              return Home(store);
+            },
+          )),
     );
   }
 }
 
 class Home extends StatelessWidget {
-  const Home({Key key}) : super(key: key);
+  final DevToolsStore<AppState> store;
+  const Home(this.store, {Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +68,19 @@ class Home extends StatelessWidget {
             ),
           );
         },
+      ),
+      drawer: SafeArea(
+        child: Column(
+          children: [
+            Expanded(
+              child: ReduxDevTools(store),
+            ),
+            RaisedButton(
+              child: Icon(Icons.close),
+              onPressed: () => Navigator.pop(context),
+            )
+          ],
+        ),
       ),
     );
   }
