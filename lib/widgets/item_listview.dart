@@ -13,11 +13,15 @@ class ItemListView extends StatelessWidget {
       itemBuilder: (context, index) {
         Item item = model.items[index];
         return ListTile(
-          leading: IconButton(
+          leading: Checkbox(
+            value: item.completed,
+            onChanged: (value) => model.onCompleted(item),
+          ),
+          title: Text(item.title),
+          trailing: IconButton(
             icon: Icon(Icons.delete),
             onPressed: () => model.onRemoveItem(item),
           ),
-          title: Text(item.title),
         );
         // return model.items[index].
       },

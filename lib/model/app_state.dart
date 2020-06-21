@@ -5,7 +5,7 @@ import 'item.dart';
 class AppState {
   final List<Item> items;
 
-  AppState({
+  const AppState({
     @required this.items,
   });
 
@@ -15,4 +15,8 @@ class AppState {
       : items = (json['items'] as List).map((i) => Item.fromJson(i)).toList();
 
   Map toJson() => {'items': items};
+
+  String toString() {
+    return toJson().toString();
+  }
 }

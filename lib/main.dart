@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
     final DevToolsStore<AppState> store = DevToolsStore<AppState>(
       appStateReducer,
       initialState: AppState.initialState(),
-      middleware: [appStateMiddleware],
+      middleware: appStateMiddleware(),
     );
 
     return StoreProvider<AppState>(

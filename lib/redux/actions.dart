@@ -21,8 +21,14 @@ class RemoveItemsAction {}
 
 class GetItemsAction {}
 
-class LoadedItemsActions {
+class LoadedItemsAction {
   final List<Item> items;
 
-  LoadedItemsActions(this.items);
+  LoadedItemsAction(this.items);
+}
+
+class ItemCompletedAction {
+  final Item item;
+
+  ItemCompletedAction(this.item);
 }
